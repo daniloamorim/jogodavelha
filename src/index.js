@@ -100,7 +100,7 @@ function Square (props){
         const move = history.map((step, move) =>{
             const desc = move ?
                 'Marque a casa Numero #' + move:
-                'Que comece o Jogo';
+                'Play';
                 return(
                     <li>
                         <button onClick = {() => this.jumpTo(move)}>{desc}</button>
