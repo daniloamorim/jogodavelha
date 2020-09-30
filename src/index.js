@@ -71,12 +71,13 @@ function Square (props){
             history: [{
                 squares: Array(9).fill(null)
             }],
+            stepNumber: 0,
             xIsNext: true,
         };
     }
 
     handleClick(i){
-        const history = this.state.history;
+        const history = this.state.history.slice(0, this.state.stepNumber + 1);
         const current = history[history.length - 1];
         const squares = current.squares.slice();
         if ( calculateWinner (squares) || ( squares[i])) {
@@ -87,14 +88,23 @@ function Square (props){
             history: history.concat([{
                squares: squares,  
             }]) ,   
+            stepNumber: history.length,
             xIsNext : !this.state.xIsNext,
         });
+ }
+
+ //Definindo o metodo jumpTo
+ jumpTo(step) {
+     this.setState({
+         stepNumber: step,
+         xIsNext: (step %2) === 0,
+     });
  }
    // Historico de jogadas
    render() {
 
         const history = this.state.history;
-        const current = history[history.length - 1];
+        const current = history[this.state.stepNumber];
         const winner = calculateWinner( current.squares);
 
         const move = history.map((step, move) =>{
@@ -102,7 +112,7 @@ function Square (props){
                 'Marque a casa Numero #' + move:
                 'Play';
                 return(
-                    <li>
+                    <li key={move}>
                         <button onClick = {() => this.jumpTo(move)}>{desc}</button>
                     </li>
                 );
